@@ -51,6 +51,10 @@
 	export function focus() {
 		self?.focus();
 	}
+
+	export function element(): HTMLInputElement | HTMLTextAreaElement | undefined {
+		return self?.element();
+	}
 </script>
 
 <FieldInput
@@ -73,6 +77,7 @@
 
 <style lang="scss" global>
 	.text-input {
+		flex-shrink: 0;
 		input {
 			text-align: left;
 		}
