@@ -458,14 +458,19 @@ impl Fsm for SelectToolFsmState {
 				// If the user clicks on a layer that is in their current selection, go into the dragging mode.
 				// If the user clicks on new shape, make that layer their new selection.
 				// Otherwise enter the box select mode
-				let state = if tool_data.pivot.is_over(input.mouse.position) {
+
+				let state =
+				// Dragging the pivot
+				if tool_data.pivot.is_over(input.mouse.position) {
 					responses.add(DocumentMessage::StartTransaction);
 
 					tool_data.snap_manager.start_snap(document, input, document.bounding_boxes(None, None, render_data), true, true);
 					tool_data.snap_manager.add_all_document_handles(document, input, &[], &[], &[]);
 
 					SelectToolFsmState::DraggingPivot
-				} else if let Some(_selected_edges) = dragging_bounds {
+				}
+				// Dragging one (or two, forming a corner) of the transform cage bounding box edges
+				else if let Some(_selected_edges) = dragging_bounds {
 					responses.add(DocumentMessage::StartTransaction);
 
 					// let snap_x = selected_edges.2 || selected_edges.3;
@@ -497,7 +502,9 @@ impl Fsm for SelectToolFsmState {
 					}
 
 					SelectToolFsmState::ResizingBounds
-				} else if rotating_bounds {
+				}
+				// Dragging near the transform cage bounding box to rotate it
+				else if rotating_bounds {
 					responses.add(DocumentMessage::StartTransaction);
 
 					if let Some(bounds) = &mut tool_data.bounding_box_overlays {
@@ -518,7 +525,9 @@ impl Fsm for SelectToolFsmState {
 					tool_data.layers_dragging = selected;
 
 					SelectToolFsmState::RotatingBounds
-				} else if intersection.is_some_and(|intersection| selected.iter().any(|selected_layer| intersection.starts_with(*selected_layer, document.metadata())))
+				}
+				// Dragging the selected layers around to transform them
+				else if intersection.is_some_and(|intersection| selected.iter().any(|selected_layer| intersection.starts_with(*selected_layer, document.metadata())))
 					&& tool_data.nested_selection_behavior == NestedSelectionBehavior::Deepest
 				{
 					responses.add(DocumentMessage::StartTransaction);
@@ -531,7 +540,9 @@ impl Fsm for SelectToolFsmState {
 					// 	.start_snap(document, input, document.bounding_boxes(Some(&tool_data.layers_dragging), None, render_data), true, true);
 
 					SelectToolFsmState::Dragging
-				} else {
+				}
+				// Dragging a selection box
+				else {
 					responses.add(DocumentMessage::StartTransaction);
 					tool_data.layers_dragging = selected;
 

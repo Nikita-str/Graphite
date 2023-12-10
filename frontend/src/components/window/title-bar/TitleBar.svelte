@@ -36,7 +36,7 @@
 	let entries: MenuListEntry[] = [];
 
 	$: docIndex = $portfolio.activeDocumentIndex;
-	$: displayName = $portfolio.documents[docIndex]?.displayName || "";
+	$: displayName = $portfolio.documents[docIndex]?.displayName;
 	$: windowTitle = `${displayName}${displayName && " - "}Graphite`;
 
 	onMount(() => {

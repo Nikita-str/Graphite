@@ -418,6 +418,7 @@ fn static_nodes() -> Vec<DocumentNodeDefinition> {
 			..Default::default()
 		},
 		DocumentNodeDefinition {
+			// Basically builds the concept of a closure where we store variables (`let` bindings) so they can be accessed within this scope.
 			name: "Begin Scope",
 			category: "Ignore",
 			implementation: NodeImplementation::DocumentNode(NodeNetwork {
