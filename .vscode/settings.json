@@ -46,5 +46,10 @@
 	"files.insertFinalNewline": true,
 	"files.associations": {
 		"*.graphite": "json"
+	},
+	"[javascript][scss][svelte][typescript]": {
+		"editor.codeActionsOnSave": {
+			"source.fixAll.eslint": "explicit"
+		}
 	}
 }

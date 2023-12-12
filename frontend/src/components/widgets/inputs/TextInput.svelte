@@ -18,6 +18,10 @@
 	export let minWidth = 0;
 	export let sharpRightCorners = false;
 
+	let className = "";
+	export { className as class };
+	export let classes: Record<string, boolean> = {};
+
 	let self: FieldInput | undefined;
 	let editing = false;
 
@@ -58,8 +62,8 @@
 </script>
 
 <FieldInput
-	class="text-input"
-	classes={{ centered }}
+	class={`text-input ${className}`.trim()}
+	classes={{ centered, ...classes }}
 	styles={{ "min-width": minWidth > 0 ? `${minWidth}px` : undefined }}
 	{value}
 	on:value
